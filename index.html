@@ -276,10 +276,10 @@
     </div>
 
     <script>
-        // Papka yo'li - O'Z PAPKA YO'LINGIZNI QO'YING
-        const folderPath = "C:\\Users\\Lazizjon_M\\Desktop\\meyu\\";
+        // YANGI: GitHub raw link
+        const folderPath = "https://raw.githubusercontent.com/laziz-commits/Golden-strewberry-/main/";
         
-        // Rasm nomlari ro'yxati
+        // Rasm nomlari ro'yxati - GitHub-da bor rasmlar
         const imageFiles = [
             "photo_1_2026-01-13_15-51-29.jpg",
             "photo_2_2026-01-13_15-51-44.jpg",
@@ -318,7 +318,8 @@
             "photo_35_2026-01-13_15-51-44.jpg"
         ];
         
-
+        // Agar GitHub-da faqat ma'lum rasmlar bo'lsa, shularni qo'shing
+        // Sizning GitHub repoingizda bor rasmlar ro'yxatini yozing
         
         let currentImageIndex = 0;
         
@@ -327,7 +328,9 @@
             const gallery = document.getElementById('gallery');
             const totalCount = document.getElementById('totalCount');
             
-            totalCount.textContent = imageFiles.length;
+            // GitHub-dagi rasmlar sonini hisoblash
+            const availableImages = imageFiles.length;
+            totalCount.textContent = availableImages;
             
             imageFiles.forEach((imageFile, index) => {
                 const card = document.createElement('div');
@@ -338,11 +341,20 @@
                 img.className = 'photo-img';
                 img.src = folderPath + imageFile;
                 img.alt = `Shirinlik ${index + 1}`;
+                img.loading = 'lazy'; // Tez yuklanish uchun
                 
                 // Agar rasm yo'q bo'lsa, placeholder ko'rsatish
                 img.onerror = function() {
                     console.log(`Rasm topilmadi: ${imageFile}`);
-                    this.src = `https://via.placeholder.com/300x300/FFE4E1/FF6347?text=Shirinlik+${index + 1}`;
+                    // Internetdan rasm
+                    const placeholderImages = [
+                        'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=400&h=300&fit=crop',
+                        'https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?w=400&h=300&fit=crop',
+                        'https://images.unsplash.com/photo-1541783245831-57d6fb0926d3?w=400&h=300&fit=crop',
+                        'https://images.unsplash.com/photo-1519861531473-920034658307?w=400&h=300&fit=crop'
+                    ];
+                    const randomIndex = Math.floor(Math.random() * placeholderImages.length);
+                    this.src = placeholderImages[randomIndex];
                 };
                 
                 const number = document.createElement('div');
@@ -406,4 +418,4 @@
         });
     </script>
 </body>
-</html> 36 rasdan keyingilarini ochmadi; o'chirib yubor ochmayotganlarini (36,37,38,,,45 tartib raqamdagilar)
+</html>

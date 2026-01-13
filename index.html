@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Golden Strawberry</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .header {
+            text-align: center;
+            padding: 30px 20px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            margin-bottom: 30px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        h1 {
+            color: #e63946;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #e63946, #ff6b6b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .subtitle {
+            color: #6c757d;
+            font-size: 1.1rem;
+        }
+        
+        .gallery-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 15px;
+        }
+        
+        .photo-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .photo-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+        
+        .photo-img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+        
+        .photo-card:hover .photo-img {
+            transform: scale(1.05);
+        }
+        
+        .photo-number {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(230, 57, 70, 0.9);
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        
+        .counter {
+            text-align: center;
+            font-size: 1.2rem;
+            color: #495057;
+            margin: 25px 0;
+            padding: 15px;
+            background: white;
+            border-radius: 10px;
+            max-width: 300px;
+            margin-left: auto;
+            margin-right: auto;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+        }
+        
+        .highlight {
+            color: #e63946;
+            font-weight: bold;
+            font-size: 1.4rem;
+        }
+        
+        /* Kattalashtirish uchun modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.95);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .modal.active {
+            display: flex;
+            opacity: 1;
+        }
+        
+        .modal-img {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+            border-radius: 10px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+        
+        .modal.active .modal-img {
+            transform: scale(1);
+        }
+        
+        .close-btn {
+            position: absolute;
+            top: 25px;
+            right: 35px;
+            color: white;
+            font-size: 50px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s ease;
+        }
+        
+        .close-btn:hover {
+            transform: rotate(90deg);
+        }
+        
+        .nav-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: none;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            font-size: 24px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+        
+        .nav-btn:hover {
+            background: rgba(230, 57, 70, 0.8);
+            transform: translateY(-50%) scale(1.1);
+        }
+        
+        .prev-btn {
+            left: 30px;
+        }
+        
+        .next-btn {
+            right: 30px;
+        }
+        
+        /* Responsive dizayn */
+        @media (max-width: 1200px) {
+            .gallery-container {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+                gap: 15px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .gallery-container {
+                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+                gap: 12px;
+            }
+            
+            .photo-img {
+                height: 180px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .nav-btn {
+                width: 50px;
+                height: 50px;
+                font-size: 20px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .gallery-container {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+            
+            .photo-img {
+                height: 160px;
+            }
+            
+            body {
+                padding: 10px;
+            }
+            
+            .header {
+                padding: 20px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🍓Golden Strawberry🍓</h1>
+        <p class="subtitle">🍓Golden Strawberry🍓</p>
+    </div>
+    
+    <div class="counter">
+        Jami: <span class="highlight" id="totalCount">45</span> ta rasm
+    </div>
+    
+    <div class="gallery-container" id="gallery">
+        <!-- Rasmlar JavaScript orqali yuklanadi -->
+    </div>
+    
+    <!-- Kattalashtirish uchun modal -->
+    <div class="modal" id="imageModal">
+        <button class="close-btn" onclick="closeModal()">×</button>
+        <button class="nav-btn prev-btn" onclick="prevImage()">‹</button>
+        <img class="modal-img" id="modalImage" src="" alt="Kattalashtirilgan rasm">
+        <button class="nav-btn next-btn" onclick="nextImage()">›</button>
+    </div>
+
+    <script>
+        // Papka yo'li - O'Z PAPKA YO'LINGIZNI QO'YING
+        const folderPath = "C:\\Users\\Lazizjon_M\\Desktop\\meyu\\";
+        
+        // Rasm nomlari ro'yxati
+        const imageFiles = [
+            "photo_1_2026-01-13_15-51-29.jpg",
+            "photo_2_2026-01-13_15-51-44.jpg",
+            "photo_3_2026-01-13_15-51-29.jpg",
+            "photo_4_2026-01-13_15-51-29.jpg",
+            "photo_5_2026-01-13_15-51-44.jpg",
+            "photo_6_2026-01-13_15-51-29.jpg",
+            "photo_7_2026-01-13_15-51-44.jpg",
+            "photo_8_2026-01-13_15-51-44.jpg",
+            "photo_9_2026-01-13_15-51-29.jpg",
+            "photo_10_2026-01-13_15-51-29.jpg",
+            "photo_11_2026-01-13_15-51-44.jpg",
+            "photo_12_2026-01-13_15-51-44.jpg",
+            "photo_13_2026-01-13_15-51-44.jpg",
+            "photo_14_2026-01-13_15-51-44.jpg",
+            "photo_15_2026-01-13_15-51-44.jpg",
+            "photo_16_2026-01-13_15-51-44.jpg",
+            "photo_17_2026-01-13_15-51-44.jpg",
+            "photo_18_2026-01-13_15-51-44.jpg",
+            "photo_19_2026-01-13_15-51-44.jpg",
+            "photo_20_2026-01-13_15-51-44.jpg",
+            "photo_21_2026-01-13_15-51-44.jpg",
+            "photo_22_2026-01-13_15-51-44.jpg",
+            "photo_23_2026-01-13_15-51-44.jpg",
+            "photo_24_2026-01-13_15-51-44.jpg",
+            "photo_25_2026-01-13_15-51-44.jpg",
+            "photo_26_2026-01-13_15-51-44.jpg",
+            "photo_27_2026-01-13_15-51-44.jpg",
+            "photo_28_2026-01-13_15-51-44.jpg",
+            "photo_29_2026-01-13_15-51-44.jpg",
+            "photo_30_2026-01-13_15-51-44.jpg",
+            "photo_31_2026-01-13_15-51-44.jpg",
+            "photo_32_2026-01-13_15-51-44.jpg",
+            "photo_33_2026-01-13_15-51-44.jpg",
+            "photo_34_2026-01-13_15-51-44.jpg",
+            "photo_35_2026-01-13_15-51-44.jpg"
+        ];
+        
+
+        
+        let currentImageIndex = 0;
+        
+        // Galereyani yaratish
+        function createGallery() {
+            const gallery = document.getElementById('gallery');
+            const totalCount = document.getElementById('totalCount');
+            
+            totalCount.textContent = imageFiles.length;
+            
+            imageFiles.forEach((imageFile, index) => {
+                const card = document.createElement('div');
+                card.className = 'photo-card';
+                card.onclick = () => openModal(index);
+                
+                const img = document.createElement('img');
+                img.className = 'photo-img';
+                img.src = folderPath + imageFile;
+                img.alt = `Shirinlik ${index + 1}`;
+                
+                // Agar rasm yo'q bo'lsa, placeholder ko'rsatish
+                img.onerror = function() {
+                    console.log(`Rasm topilmadi: ${imageFile}`);
+                    this.src = `https://via.placeholder.com/300x300/FFE4E1/FF6347?text=Shirinlik+${index + 1}`;
+                };
+                
+                const number = document.createElement('div');
+                number.className = 'photo-number';
+                number.textContent = index + 1;
+                
+                card.appendChild(img);
+                card.appendChild(number);
+                gallery.appendChild(card);
+            });
+        }
+        
+        // Modal ochish
+        function openModal(index) {
+            currentImageIndex = index;
+            const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('modalImage');
+            
+            modalImg.src = folderPath + imageFiles[index];
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        // Modal yopish
+        function closeModal() {
+            const modal = document.getElementById('imageModal');
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+        
+        // Keyingi rasm
+        function nextImage() {
+            currentImageIndex = (currentImageIndex + 1) % imageFiles.length;
+            document.getElementById('modalImage').src = folderPath + imageFiles[currentImageIndex];
+        }
+        
+        // Oldingi rasm
+        function prevImage() {
+            currentImageIndex = (currentImageIndex - 1 + imageFiles.length) % imageFiles.length;
+            document.getElementById('modalImage').src = folderPath + imageFiles[currentImageIndex];
+        }
+        
+        // Klaviatura boshqaruvi
+        document.addEventListener('keydown', (e) => {
+            const modal = document.getElementById('imageModal');
+            if (!modal.classList.contains('active')) return;
+            
+            if (e.key === 'Escape') closeModal();
+            if (e.key === 'ArrowRight') nextImage();
+            if (e.key === 'ArrowLeft') prevImage();
+        });
+        
+        // Sahifa yuklanganda galereyani yaratish
+        document.addEventListener('DOMContentLoaded', createGallery);
+        
+        // Modalni bosganda yopish
+        document.getElementById('imageModal').addEventListener('click', (e) => {
+            if (e.target === document.getElementById('imageModal')) {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html> 36 rasdan keyingilarini ochmadi; o'chirib yubor ochmayotganlarini (36,37,38,,,45 tartib raqamdagilar)

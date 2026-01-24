@@ -96,26 +96,6 @@
             font-size: 14px;
         }
         
-        .counter {
-            text-align: center;
-            font-size: 1.2rem;
-            color: #495057;
-            margin: 25px 0;
-            padding: 15px;
-            background: white;
-            border-radius: 10px;
-            max-width: 300px;
-            margin-left: auto;
-            margin-right: auto;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
-        }
-        
-        .highlight {
-            color: #e63946;
-            font-weight: bold;
-            font-size: 1.4rem;
-        }
-        
         /* Kattalashtirish uchun modal */
         .modal {
             display: none;
@@ -259,9 +239,7 @@
         <p class="subtitle">🍓Golden Strawberry🍓</p>
     </div>
     
-    <div class="counter">
-        Jami: <span class="highlight" id="totalCount">46</span> ta rasm
-    </div>
+    <!-- "Jami: 45 ta rasm" yozuvi OLIB TASHLANDI -->
     
     <div class="gallery-container" id="gallery">
         <!-- Rasmlar JavaScript orqali yuklanadi -->
@@ -333,11 +311,6 @@
         // Galereyani yaratish
         function createGallery() {
             const gallery = document.getElementById('gallery');
-            const totalCount = document.getElementById('totalCount');
-            
-            // GitHub-dagi rasmlar sonini hisoblash
-            const availableImages = imageFiles.length;
-            totalCount.textContent = availableImages;
             
             imageFiles.forEach((imageFile, index) => {
                 const card = document.createElement('div');

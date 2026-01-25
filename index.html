@@ -239,8 +239,6 @@
         <p class="subtitle">🍓Golden Strawberry🍓</p>
     </div>
     
-    <!-- "Jami: 45 ta rasm" yozuvi OLIB TASHLANDI -->
-    
     <div class="gallery-container" id="gallery">
         <!-- Rasmlar JavaScript orqali yuklanadi -->
     </div>
@@ -257,18 +255,20 @@
         // GitHub raw link
         const folderPath = "https://raw.githubusercontent.com/laziz-commits/Golden-strewberry-/main/";
         
-        // TO'LIQ Rasm nomlari ro'yxati - 46 ta rasm
+        // YANGILANGAN: GitHub'dagi barcha fayllar ro'yxati (48 ta rasm)
         const imageFiles = [
+            // 15:51:29 dagi rasmlar (1-10)
             "photo_1_2026-01-13_15-51-29.jpg",
             "photo_2_2026-01-13_15-51-29.jpg",
             "photo_3_2026-01-13_15-51-29.jpg",
             "photo_4_2026-01-13_15-51-29.jpg",
             "photo_5_2026-01-13_15-51-29.jpg",
-            "photo_6_2026-01-13_15-51-29.jpg",
-            "photo_7_2026-01-13_15-51-29.jpg",
+            "photo_7_2026-01-13_15-51-29.jpg",  // photo_6 yo'q ekan
             "photo_8_2026-01-13_15-51-29.jpg",
             "photo_9_2026-01-13_15-51-29.jpg",
             "photo_10_2026-01-13_15-51-29.jpg",
+            
+            // 15:51:44 dagi rasmlar (1-35)
             "photo_1_2026-01-13_15-51-44.jpg",
             "photo_2_2026-01-13_15-51-44.jpg",
             "photo_3_2026-01-13_15-51-44.jpg",
@@ -303,7 +303,13 @@
             "photo_32_2026-01-13_15-51-44.jpg",
             "photo_33_2026-01-13_15-51-44.jpg",
             "photo_34_2026-01-13_15-51-44.jpg",
-            "photo_35_2026-01-13_15-51-44.jpg"
+            "photo_35_2026-01-13_15-51-44.jpg",
+            
+            // Yangi rasmlar (2026-01-19)
+            "photo_2026-01-19_12-23-40.jpg",
+            "photo_2026-01-19_12-23-42.jpg",
+            "photo_2026-01-19_12-33-06.jpg",
+            "photo_2026-01-19_12-33-07.jpg"
         ];
         
         let currentImageIndex = 0;
@@ -321,12 +327,11 @@
                 img.className = 'photo-img';
                 img.src = folderPath + imageFile;
                 img.alt = `Golden Strawberry ${index + 1}`;
-                img.loading = 'lazy'; // Tez yuklanish uchun
+                img.loading = 'lazy';
                 
                 // Agar rasm yo'q bo'lsa, placeholder ko'rsatish
                 img.onerror = function() {
                     console.log(`Rasm topilmadi: ${imageFile}`);
-                    // Internetdan placeholder rasm
                     const placeholderImages = [
                         'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=400&h=300&fit=crop',
                         'https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?w=400&h=300&fit=crop',
